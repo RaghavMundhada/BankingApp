@@ -1,6 +1,10 @@
 package bankingApp;
 
+import bankingApp.bankAccount.BankAccount;
+import bankingApp.bankAccount.BankAccountSerializer;
 import bankingApp.user.customer.Customer;
+import bankingApp.user.customer.CustomerSerializer;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,6 +14,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class CustomerOperationsUtkarsh {
+    private static Logger logger = Logger.getLogger(CustomerOperationsUtkarsh.class);
 
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
@@ -50,7 +55,7 @@ public class CustomerOperationsUtkarsh {
                         deposit();
                         break;
                     case 3:
-                        withDraw();
+                        withDraw(userId);
                         break;
                     case 4:
                         transferFunds();
@@ -74,14 +79,42 @@ public class CustomerOperationsUtkarsh {
         //write your code here;
     }
 
-    private static void withDraw() {
+    private static void withDraw(String userId) {
         //write your code here;
 
-        System.out.println("");
+        System.out.println("Hello user, how are you today! \n Enter amount to withdraw from your account. " );
+        Scanner scanner = new Scanner(System.in);
+        Double amount = scanner.nextDouble();
+
+        Transaction transaction = new Transaction();
+        Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+        String customerBankAccountNumber = customer.getAccountNumber();
+        transaction.setPayeeAccountNumber(customerBankAccountNumber);
+        transaction.setTransactionAmount(amount);
+
+
     }
 
-    private static void deposit() {
+    private static void deposit(String userId) {
         //write your code here;
+
+        System.out.println("Hello user, how are you today! \n Enter amount to deposit in your account." );
+        Scanner scanner = new Scanner(System.in);
+        Double amount = scanner.nextDouble();
+
+        System.out.println("Depositing amount in your account .... ");
+
+        Transaction transaction = new Transaction();
+        Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+        String customerBankAccountNumber = customer.getAccountNumber();
+        transaction.setPayeeAccountNumber(customerBankAccountNumber);
+        transaction.setTransactionAmount(amount);
+
+        TransactionUtil.withdrawAmount(transaction);
+
+        if(transaction.getTransactionStatus().equals("FAILED")){
+            System.out.println("Requested amount cannot be withdrawn due to lack of funds!");
+        }
     }
 
     private static boolean isRegisteredUser(String userId, String password) {

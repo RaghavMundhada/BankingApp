@@ -7,8 +7,8 @@ public class Transaction {
     private int transactionId;
     private int payerId;
     private int payeeId;
-    private int payerAccountNumber;
-    private int payeeAccountNumber;
+    private String payerAccountNumber;
+    private String payeeAccountNumber;
 
     private Double transactionAmount;
     private String transactionType;
@@ -17,19 +17,19 @@ public class Transaction {
     private String timestampTransactionUpdated;
 
 
-    public int getPayerAccountNumber() {
+    public String getPayerAccountNumber() {
         return payerAccountNumber;
     }
 
-    public void setPayerAccountNumber(int payerAccountNmber) {
+    public void setPayerAccountNumber(String payerAccountNmber) {
         this.payerAccountNumber = payerAccountNmber;
     }
 
-    public int getPayeeAccountNumber() {
+    public String getPayeeAccountNumber() {
         return payeeAccountNumber;
     }
 
-    public void setPayeeAccountNumber(int payeeAccountNumber) {
+    public void setPayeeAccountNumber(String payeeAccountNumber) {
         this.payeeAccountNumber = payeeAccountNumber;
     }
 

@@ -42,11 +42,13 @@ public class TransactionUtil {
         String timeStampUpdated = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         transaction.setTimestampTransactionCreated(timeStampUpdated);
         if(newBalance < 0){
-            transaction.setTransactionStatus("FAILED! Withdraw amount is greater than available balance");
+            transaction.setTransactionStatus("FAILED");
+            System.out.println("Requested amount cannot be withdrawn due to lack of funds!, current balance : " + bankAccount.getBalance());
             return;
         }
+        System.out.println("Amount withdrawn successfully, new balance: " + newBalance);
         bankAccount.setBalance(newBalance);
-        transaction.setTransactionStatus("SUCCESSFUL! Amount has been withdrawn");
+        transaction.setTransactionStatus("SUCCESSFUL");
         BankAccountSerializer.serializeBankAccount(bankAccount);
     }
 
