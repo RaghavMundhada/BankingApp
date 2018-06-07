@@ -15,6 +15,11 @@ public class BankAccount implements Serializable{
     private String accountNumber;
     private Double balance;
 
+    public BankAccount(Customer accountOwner, String accountNumber) {
+        this.accountOwner = accountOwner;
+        this.accountNumber = accountNumber;
+        balance = 0.0;
+    }
 
     private TypeOfAccount typeOfAccount;
     private List<Transaction> transactions ;

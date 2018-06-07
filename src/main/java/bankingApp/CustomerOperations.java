@@ -1,5 +1,11 @@
 package bankingApp;
 
+import bankingApp.bankAccount.BankAccount;
+import bankingApp.bankAccount.BankAccountSerializer;
+import bankingApp.user.customer.Customer;
+import bankingApp.user.customer.CustomerSerializer;
+import bankingApp.user.employee.Employee;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +33,7 @@ public class CustomerOperations {
         }
     }
 
-    private static void login(Scanner sc) {
+    private static void login(Scanner sc) throws IOException {
         System.out.println("Enter userId : ");
         String userId = sc.nextLine();
         System.out.println("Enter password : ");
@@ -43,15 +49,15 @@ public class CustomerOperations {
 
                 switch (choice) {
                     case 1:
-                        openAccount();
+                        openAccount(userId, sc);
                     case 2:
-                        deposit();
+                        deposit(userId, sc);
                         break;
                     case 3:
-                        withDraw();
+                        withDraw(userId, sc);
                         break;
                     case 4:
-                        transferFunds();
+                        transferFunds(userId, sc);
                         break;
                     case 5:
                         flag = false;
@@ -64,25 +70,96 @@ public class CustomerOperations {
         }
     }
 
-    private static void openAccount() {
+    private static void openAccount(String userId, Scanner sc) throws IOException {
+        System.out.println("1.Simple Account\n2.Joint Account");
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                createSimpleAccount(userId, sc);
+            case 2:
+                createJointAccount(userId, sc);
+        }
+    }
+
+    private static void createSimpleAccount(String userId, Scanner sc) throws IOException {
+        System.out.println("Enter name");
+        String name = sc.nextLine();
+        System.out.println("Enter emailId");
+        String emailID = sc.nextLine();
+        System.out.println("Enter mobile number");
+        String mobile = sc.nextLine();
+
+        Customer customer = new Customer(userId, name, emailID, mobile);
+
+        if (Employee.isDetailsValid(customer)) {
+            System.out.println("Account opened successfully.");
+            String accountNumber = getAccountNumber();
+            customer.setAccountNumber(accountNumber);
+            BankAccount b = new BankAccount(customer, accountNumber);
+            BankAccountSerializer.serializeBankAccount(b);
+            CustomerSerializer.serializeCustomerObject(customer);
+        } else {
+            System.out.println("Unable to open account.");
+        }
+    }
+
+    private static void createJointAccount(String userId, Scanner sc) throws IOException {
+        System.out.println("Enter details of primary nominee :");
+        System.out.println("Enter name");
+        String namePrimary = sc.nextLine();
+        System.out.println("Enter emailId");
+        String emailIDPrimary = sc.nextLine();
+        System.out.println("Enter mobile number");
+        String mobilePrimary = sc.nextLine();
+
+        System.out.println("Enter details of secondary nominee :");
+        System.out.println("Enter name");
+        String nameSecondary = sc.nextLine();
+        System.out.println("Enter emailId");
+        String emailIDSecondary = sc.nextLine();
+        System.out.println("Enter mobile number");
+        String mobileSecondary = sc.nextLine();
+
+        Customer customerPrimary = new Customer(userId, namePrimary, emailIDPrimary, mobilePrimary);
+        Customer customerSecondary = new Customer(userId, nameSecondary, emailIDSecondary, mobileSecondary);
+
+        if (Employee.isDetailsValid(customerPrimary) && Employee.isDetailsValid(customerSecondary)) {
+            System.out.println("Account opened successfully.");
+            String accountNumber = getAccountNumber();
+            customerPrimary.setAccountNumber(accountNumber);
+            customerSecondary.setAccountNumber(accountNumber);
+            BankAccount b = new BankAccount(customerPrimary, accountNumber);
+            BankAccountSerializer.serializeBankAccount(b);
+            BankAccount b1 = new BankAccount(customerSecondary, accountNumber);
+            BankAccountSerializer.serializeBankAccount(b1);
+            CustomerSerializer.serializeCustomerObject(customerPrimary);
+            CustomerSerializer.serializeCustomerObject(customerSecondary);
+        } else {
+            System.out.println("Unable to open account.");
+        }
+    }
+
+    private static void transferFunds(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void transferFunds() {
+    private static void withDraw(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void withDraw() {
+    private static void deposit(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void deposit() {
-        //write your code here;
-    }
+    private static boolean isRegisteredUser(String userId, String password) throws IOException {
+        HashMap<String, String> registeredUser = getRegisteredUser();
 
-    private static boolean isRegisteredUser(String userId, String password) {
-        //write your code here;
-        return true;
+        if (registeredUser.containsKey(userId)) {
+            if (password.equals(registeredUser.get(userId)))
+                return true;
+        }
+        return false;
     }
 
     private static void registerUser(Scanner sc) throws IOException {
@@ -103,6 +180,8 @@ public class CustomerOperations {
 
             break;
         }
+
+        System.out.println("User Registered Successfully!");
     }
 
     private static void saveUser(String userId, String password) {
@@ -125,5 +204,17 @@ public class CustomerOperations {
         }
 
         return registeredUser;
+    }
+
+    public static String getAccountNumber() throws IOException {
+        File file = new File("AcountsCreatedTillDate.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String st;
+        String accountNumber = br.readLine();
+        br.close();
+
+        Files.write(Paths.get("AcountsCreatedTillDate.txt"), String.valueOf(Integer.parseInt(accountNumber) + 1).getBytes(), StandardOpenOption.WRITE);
+        return accountNumber;
     }
 }
