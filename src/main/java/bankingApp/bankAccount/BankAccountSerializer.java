@@ -9,7 +9,7 @@ public class BankAccountSerializer {
     private static Logger logger = Logger.getLogger(BankAccountSerializer.class);
 
     public static void serializeBankAccount(BankAccount bankAccount){
-        String bankAccountNumber = Integer.toString(bankAccount.getAccountNumber());
+        String bankAccountNumber = bankAccount.getAccountNumber();
 
         try {
             File newFile = new File(bankAccountNumber);
@@ -34,8 +34,8 @@ public class BankAccountSerializer {
     }
 
 
-    public static BankAccount deSerializeBankAccount(int accountNumber){
-        String bankAccountNumber = Integer.toString(accountNumber);
+    public static BankAccount deSerializeBankAccount(String accountNumber){
+        String bankAccountNumber = accountNumber;
         BankAccount bankAccount1;
         try {
             FileInputStream fileInputStream = new FileInputStream(bankAccountNumber);

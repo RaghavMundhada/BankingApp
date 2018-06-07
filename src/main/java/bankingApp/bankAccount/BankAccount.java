@@ -12,7 +12,7 @@ public class BankAccount implements Serializable{
     }
 
     private Customer accountOwner;
-    private int accountNumber;
+    private String accountNumber;
     private Double balance;
 
 
@@ -53,11 +53,11 @@ public class BankAccount implements Serializable{
         this.accountOwner = accountOwner;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
