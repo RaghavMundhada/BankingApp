@@ -11,7 +11,7 @@ public class Customer implements Serializable {
     private String emailId;
     private String mobileNumber;
     //TODO change this to list of account numbers
-    private int accountNumber;
+    private String accountNumber;
 
 
 
@@ -22,11 +22,11 @@ public class Customer implements Serializable {
         this.mobileNumber = mobileNumber;
     }
 
-    public int getAccountNumber() {
+    public String  getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
