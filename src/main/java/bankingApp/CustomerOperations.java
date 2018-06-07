@@ -1,11 +1,15 @@
 package bankingApp;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class CustomerOperations {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         int choice;
         while (true) {
@@ -32,12 +36,12 @@ public class CustomerOperations {
         if (isRegisteredUser(userId, password)) {
             int choice;
             boolean flag = true;
-            while (flag){
+            while (flag) {
                 System.out.println("1.Open Account\n2.Deposit\n3.Withdraw\n4.Transfer Funds\n5.Logout");
 
                 choice = sc.nextInt();
 
-                switch (choice){
+                switch (choice) {
                     case 1:
                         openAccount();
                     case 2:
@@ -81,7 +85,7 @@ public class CustomerOperations {
         return true;
     }
 
-    private static void registerUser(Scanner sc) {
+    private static void registerUser(Scanner sc) throws IOException {
         HashMap<String, String> registeredUsers = getRegisteredUser();
         while (true) {
             System.out.println("Enter userId : ");
@@ -101,12 +105,24 @@ public class CustomerOperations {
     }
 
     private static void saveUser(String userId, String password) {
-        //write your code here;
+        try {
+            Files.write(Paths.get("registeredUsers.txt"), (userId + "\t" + password + "\n").getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
     }
 
-    public static HashMap<String, String> getRegisteredUser() {
+    public static HashMap<String, String> getRegisteredUser() throws IOException {
         HashMap<String, String> registeredUser = new HashMap<String, String>();
-        //readUsers here;
+        File file = new File("registeredUsers.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String st;
+        while ((st = br.readLine()) != null) {
+            String[] details = st.split("\t");
+            registeredUser.put(details[0], details[1]);
+        }
+
         return registeredUser;
     }
 }
