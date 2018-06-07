@@ -27,7 +27,7 @@ public class CustomerOperations {
         }
     }
 
-    private static void login(Scanner sc) {
+    private static void login(Scanner sc) throws IOException {
         System.out.println("Enter userId : ");
         String userId = sc.nextLine();
         System.out.println("Enter password : ");
@@ -43,15 +43,15 @@ public class CustomerOperations {
 
                 switch (choice) {
                     case 1:
-                        openAccount();
+                        openAccount(userId, sc);
                     case 2:
-                        deposit();
+                        deposit(userId, sc);
                         break;
                     case 3:
-                        withDraw();
+                        withDraw(userId, sc);
                         break;
                     case 4:
-                        transferFunds();
+                        transferFunds(userId, sc);
                         break;
                     case 5:
                         flag = false;
@@ -64,25 +64,36 @@ public class CustomerOperations {
         }
     }
 
-    private static void openAccount() {
+    private static void openAccount(String userId, Scanner sc) {
+        System.out.println("1.Simple Account\n2.Joint Account");
+        int choice = sc.nextInt();
+
+        switch (choice){
+            case 1:
+
+        }
+    }
+
+    private static void transferFunds(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void transferFunds() {
+    private static void withDraw(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void withDraw() {
+    private static void deposit(String userId, Scanner sc) {
         //write your code here;
     }
 
-    private static void deposit() {
-        //write your code here;
-    }
+    private static boolean isRegisteredUser(String userId, String password) throws IOException {
+        HashMap<String, String> registeredUser = getRegisteredUser();
 
-    private static boolean isRegisteredUser(String userId, String password) {
-        //write your code here;
-        return true;
+        if (registeredUser.containsKey(userId)) {
+            if (password.equals(registeredUser.get(userId)))
+                return true;
+        }
+        return false;
     }
 
     private static void registerUser(Scanner sc) throws IOException {
@@ -93,6 +104,7 @@ public class CustomerOperations {
 
             if (registeredUsers.containsKey(userId)) {
                 System.out.println("UserId Already Exists");
+                continue;
             }
 
             System.out.println("Enter password : ");
