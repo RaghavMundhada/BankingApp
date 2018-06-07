@@ -1,9 +1,11 @@
 package bankingApp.user.customer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable {
+
     private String userId;
     private String name;
     private String emailId;
