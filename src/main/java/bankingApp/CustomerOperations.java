@@ -70,8 +70,25 @@ public class CustomerOperations {
 
         switch (choice){
             case 1:
-
+                createSimpleAccount(userId,sc);
+            case 2:
+                createJointAccount(userId,sc);
         }
+    }
+
+    private static void createSimpleAccount(String userId, Scanner sc) {
+        System.out.println("Enter name");
+        String name = sc.nextLine();
+        System.out.println("Enter emailId");
+        String emailID = sc.nextLine();
+        System.out.println("Enter mobile number");
+        String mobile = sc.nextLine();
+
+
+    }
+
+    private static void createJointAccount(String userId, Scanner sc) {
+
     }
 
     private static void transferFunds(String userId, Scanner sc) {
@@ -114,6 +131,8 @@ public class CustomerOperations {
 
             break;
         }
+
+        System.out.println("User Registered Successfully!");
     }
 
     private static void saveUser(String userId, String password) {
