@@ -1,7 +1,5 @@
 package bankingApp.user.customer;
 
-import bankingApp.bankAccount.AbstractAccount;
-
 import java.util.ArrayList;
 import java.util.List;
 
