@@ -1,4 +1,6 @@
 package bankingApp.bankAccount;
 
-public class AbstractAccount {
+public abstract class AbstractAccount {
+    private String accountNumber ;
+
 }
