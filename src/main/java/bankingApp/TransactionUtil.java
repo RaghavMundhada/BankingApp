@@ -25,7 +25,7 @@ public class TransactionUtil {
         transaction.setTimestampTransactionCreated(timeStampUpdated);
 
         transaction.setTransactionStatus("SUCCESSFUL");
-
+        System.out.println("Amount deposited successfully!");
         bankAccount.getTransactions().add(transaction);
         BankAccountSerializer.serializeBankAccount(bankAccount);
     }
@@ -40,7 +40,7 @@ public class TransactionUtil {
         Double newBalance = bankAccount.getBalance() - transaction.getTransactionAmount();
 
         String timeStampUpdated = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        transaction.setTimestampTransactionCreated(timeStampUpdated);
+        transaction.setTimestampTransactionUpdated(timeStampUpdated);
         if(newBalance < 0){
             transaction.setTransactionStatus("FAILED");
             System.out.println("Requested amount cannot be withdrawn due to lack of funds!, current balance : " + bankAccount.getBalance());

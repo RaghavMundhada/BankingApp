@@ -52,13 +52,13 @@ public class CustomerOperationsUtkarsh {
                     case 1:
                         openAccount();
                     case 2:
-                        deposit();
+                        deposit(userId);
                         break;
                     case 3:
                         withDraw(userId);
                         break;
                     case 4:
-                        transferFunds();
+                        transferFunds(userId);
                         break;
                     case 5:
                         flag = false;
@@ -75,28 +75,97 @@ public class CustomerOperationsUtkarsh {
         //write your code here;
     }
 
-    private static void transferFunds() {
+    private static void transferFunds(String userId) {
         //write your code here;
+        int transactionId;
+        try {
+            transactionId = getTransactionId();
+        } catch (IOException e) {
+            logger.info("Error in getting transaction id from file!");
+            e.printStackTrace();
+            return;
+        }
+
+
+        String payeeAccountNumber ;
+        Double transferAmount;
+
+        System.out.println("Hello user, how are you!\n");
+        System.out.println("Enter account number to transfer funds to : ");
+        Scanner scanner = new Scanner(System.in);
+        payeeAccountNumber = scanner.nextLine();
+
+        System.out.println("Enter amount to transfer: ");
+        transferAmount = scanner.nextDouble();
+
+        Transaction transaction = new Transaction();
+        transaction.setTransactionId(Integer.toString(transactionId));
+
+        Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+        transaction.setPayerId(userId);
+        transaction.setPayerAccountNumber(customer.getAccountNumber());
+        transaction.setPayeeAccountNumber(payeeAccountNumber);
+
+        TransactionUtil.transferFund(transaction);
+
+        logger.info("Transaction completed!");
+
+        try {
+            saveTransactionId(transactionId + 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.info("Error in writing to file!");
+        }
+
+
     }
 
     private static void withDraw(String userId) {
         //write your code here;
+        int transactionId;
+        try {
+             transactionId = getTransactionId();
+        } catch (IOException e) {
+            logger.info("Error in getting transaction id from file!");
+            e.printStackTrace();
+            return;
+        }
 
         System.out.println("Hello user, how are you today! \n Enter amount to withdraw from your account. " );
         Scanner scanner = new Scanner(System.in);
         Double amount = scanner.nextDouble();
 
         Transaction transaction = new Transaction();
+        transaction.setTransactionId(Integer.toString(transactionId));
+
         Customer customer = CustomerSerializer.deSerializeCustomer(userId);
         String customerBankAccountNumber = customer.getAccountNumber();
-        transaction.setPayeeAccountNumber(customerBankAccountNumber);
+        transaction.setPayerAccountNumber(customerBankAccountNumber);
         transaction.setTransactionAmount(amount);
+        transaction.setPayerId(userId);
+        TransactionUtil.withdrawAmount(transaction);
+        logger.info("Transaction completed!");
+
+        try {
+            saveTransactionId(transactionId + 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.info("Error in writing to file!");
+        }
 
 
     }
 
     private static void deposit(String userId) {
         //write your code here;
+        int transactionId;
+        try {
+            transactionId = getTransactionId();
+        } catch (IOException e) {
+            logger.info("Error in getting transaction id from file!");
+            e.printStackTrace();
+            return;
+        }
 
         System.out.println("Hello user, how are you today! \n Enter amount to deposit in your account." );
         Scanner scanner = new Scanner(System.in);
@@ -105,16 +174,25 @@ public class CustomerOperationsUtkarsh {
         System.out.println("Depositing amount in your account .... ");
 
         Transaction transaction = new Transaction();
+        transaction.setTransactionId(Integer.toString(transactionId));
         Customer customer = CustomerSerializer.deSerializeCustomer(userId);
         String customerBankAccountNumber = customer.getAccountNumber();
         transaction.setPayeeAccountNumber(customerBankAccountNumber);
         transaction.setTransactionAmount(amount);
+        transaction.setPayeeId(userId);
 
-        TransactionUtil.withdrawAmount(transaction);
+        TransactionUtil.depositAmount(transaction);
 
-        if(transaction.getTransactionStatus().equals("FAILED")){
-            System.out.println("Requested amount cannot be withdrawn due to lack of funds!");
+        logger.info("Transaction completed!");
+
+        try {
+            saveTransactionId(transactionId + 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.info("Error in writing to file!");
         }
+
+
     }
 
     private static boolean isRegisteredUser(String userId, String password) {
@@ -162,5 +240,25 @@ public class CustomerOperationsUtkarsh {
         }
 
         return registeredUser;
+    }
+
+    private static int getTransactionId() throws IOException {
+        File file = new File("transactionsIds.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        int id = 0;
+        String line;
+        while((line = reader.readLine())!=null){
+            id = Integer.parseInt(line.trim());
+        }
+        return id;
+    }
+
+    private static void saveTransactionId(int id) throws IOException {
+        File file = new File("transactionsIds.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+        writer.write(id);
+        writer.close();
     }
 }

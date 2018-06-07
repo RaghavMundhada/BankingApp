@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 
 public class Transaction {
-    private int transactionId;
-    private int payerId;
-    private int payeeId;
+    private String transactionId;
+    private String payerId;
+    private String payeeId;
     private String payerAccountNumber;
     private String payeeAccountNumber;
 
@@ -33,27 +33,27 @@ public class Transaction {
         this.payeeAccountNumber = payeeAccountNumber;
     }
 
-    public int getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public int getPayerId() {
+    public String getPayerId() {
         return payerId;
     }
 
-    public void setPayerId(int payerId) {
+    public void setPayerId(String payerId) {
         this.payerId = payerId;
     }
 
-    public int getPayeeId() {
+    public String getPayeeId() {
         return payeeId;
     }
 
-    public void setPayeeId(int payeeId) {
+    public void setPayeeId(String payeeId) {
         this.payeeId = payeeId;
     }
 
