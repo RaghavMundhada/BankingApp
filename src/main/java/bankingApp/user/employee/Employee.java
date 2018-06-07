@@ -12,14 +12,17 @@ public class Employee extends Customer{
 
     public static boolean isDetailsValid(Customer customer){
         if(!isValidEmail(customer.getEmailId())){
+            System.out.println("Invalid emailId : " + customer.getEmailId());
             return false;
         }
 
         if(customer.getName().isEmpty()){
+            System.out.println("Invalid name : " + customer.getName());
             return false;
         }
 
         if(!customer.getMobileNumber().matches("-?\\d+(\\.\\d+)?")){
+            System.out.println("Invalid mobile number : " + customer.getMobileNumber());
             return false;
         }
 
