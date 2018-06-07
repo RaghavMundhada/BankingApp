@@ -1,9 +1,10 @@
 package bankingApp;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 
-public class Transaction {
+public class Transaction implements Serializable{
     private String transactionId;
     private String payerId;
     private String payeeId;
