@@ -8,6 +8,10 @@ public class Customer {
     private String name;
     private String emailId;
     private String mobileNumber;
+    //TODO change this to list of account numbers
+    private int accountNumber;
+
+
 
     public Customer(String userId, String name, String emailId, String mobileNumber) {
         this.userId = userId;
@@ -15,6 +19,15 @@ public class Customer {
         this.emailId = emailId;
         this.mobileNumber = mobileNumber;
     }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
 
     public String getUserId() {
         return userId;

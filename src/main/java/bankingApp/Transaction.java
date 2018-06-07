@@ -13,10 +13,8 @@ public class Transaction {
     private Double transactionAmount;
     private String transactionType;
     private String transactionStatus;
-    private String approver;
-    private boolean critical;
-    private Timestamp timestampTransactionCreated;
-    private Timestamp timestampTransactionUpdated;
+    private String timestampTransactionCreated;
+    private String timestampTransactionUpdated;
 
 
     public int getPayerAccountNumber() {
@@ -83,35 +81,19 @@ public class Transaction {
         this.transactionStatus = transactionStatus;
     }
 
-    public String getApprover() {
-        return approver;
-    }
-
-    public void setApprover(String approver) {
-        this.approver = approver;
-    }
-
-    public boolean isCritical() {
-        return critical;
-    }
-
-    public void setCritical(boolean critical) {
-        this.critical = critical;
-    }
-
-    public Timestamp getTimestampTransactionCreated() {
+    public String getTimestampTransactionCreated() {
         return timestampTransactionCreated;
     }
 
-    public void setTimestampTransactionCreated(Timestamp timestampTransactionCreated) {
+    public void setTimestampTransactionCreated(String timestampTransactionCreated) {
         this.timestampTransactionCreated = timestampTransactionCreated;
     }
 
-    public Timestamp getTimestampTransactionUpdated() {
+    public String getTimestampTransactionUpdated() {
         return timestampTransactionUpdated;
     }
 
-    public void setTimestampTransactionUpdated(Timestamp timestampTransactionUpdated) {
+    public void setTimestampTransactionUpdated(String timestampTransactionUpdated) {
         this.timestampTransactionUpdated = timestampTransactionUpdated;
     }
 }
