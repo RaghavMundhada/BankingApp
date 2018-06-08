@@ -13,8 +13,6 @@ public class Customer implements Serializable {
     //TODO change this to list of account numbers
     private String accountNumber;
 
-
-
     public Customer(String userId, String name, String emailId, String mobileNumber) {
         this.userId = userId;
         this.name = name;

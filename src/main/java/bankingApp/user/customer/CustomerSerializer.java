@@ -17,7 +17,7 @@ public class CustomerSerializer {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             Customer customer1 = new Customer(customer.getUserId(),customer.getName(),customer.getEmailId(),customer.getMobileNumber());
-
+            customer1.setAccountNumber(customer.getAccountNumber());
             objectOutputStream.writeObject(customer1);
             objectOutputStream.close();
             fileOutputStream.close();
@@ -37,14 +37,14 @@ public class CustomerSerializer {
 
             Customer customer = (Customer) objectInputStream.readObject();
             customer1 = new Customer(customer.getUserId(),customer.getName(),customer.getEmailId(),customer.getMobileNumber());
-
+            customer1.setAccountNumber(customer.getAccountNumber());
             fileInputStream.close();
             objectInputStream.close();
 
-            logger.info("Successfully de serialized bank account number: "+ userId);
+            logger.info("Successfully de serialized customer: "+ userId);
 
         } catch (Exception e) {
-            logger.info("Exception while de serializing bank account : " + userId );
+            logger.info("Exception while de serializing customer : " + userId );
             return null;
         }
 

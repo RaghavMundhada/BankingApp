@@ -49,6 +49,7 @@ public class TransactionUtil {
         System.out.println("Amount withdrawn successfully, new balance: " + newBalance);
         bankAccount.setBalance(newBalance);
         transaction.setTransactionStatus("SUCCESSFUL");
+        bankAccount.getTransactions().add(transaction);
         BankAccountSerializer.serializeBankAccount(bankAccount);
     }
 

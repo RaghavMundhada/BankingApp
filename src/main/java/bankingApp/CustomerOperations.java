@@ -23,7 +23,7 @@ public class CustomerOperations {
             System.out.println("1.Register\n2.Login");
 
             choice = sc.nextInt();
-
+            sc.nextLine();
             if (choice == 1) {
                 registerUser(sc);
             } else if (choice == 2) {
@@ -37,6 +37,7 @@ public class CustomerOperations {
     private static void login(Scanner sc) throws IOException {
         System.out.println("Enter userId : ");
         String userId = sc.nextLine();
+
         System.out.println("Enter password : ");
         String password = sc.nextLine();
 
@@ -44,24 +45,29 @@ public class CustomerOperations {
             int choice;
             boolean flag = true;
             while (flag) {
-                System.out.println("1.Open Account\n2.Deposit\n3.Withdraw\n4.Transfer Funds\n5.Logout");
+                System.out.println("1.Open Account\n2.Check balance\n3.Deposit\n4.Withdraw\n5.Transfer Funds\n6.Logout");
 
                 choice = sc.nextInt();
-
+                sc.nextLine();
                 switch (choice) {
                     case 1:
                         openAccount(userId, sc);
+                        break;
                     case 2:
-                        deposit(userId, sc);
+                        checkBalance(userId,sc);
                         break;
                     case 3:
-                        withDraw(userId, sc);
+                        deposit(userId, sc);
                         break;
                     case 4:
-                        transferFunds(userId, sc);
+                        withDraw(userId, sc);
                         break;
                     case 5:
+                        transferFunds(userId, sc);
+                        break;
+                    case 6:
                         flag = false;
+                        break;
                     default:
                         System.out.println("Invalid choice!");
                 }
@@ -71,15 +77,34 @@ public class CustomerOperations {
         }
     }
 
+    private static void checkBalance(String userId, Scanner sc) {
+        Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+        if(customer == null){
+            System.out.println("open account first motherfucker! ");
+            return;
+        }
+        String accountNumber = customer.getAccountNumber();
+
+        BankAccount bankAccount = BankAccountSerializer.deSerializeBankAccount(accountNumber);
+        System.out.println("Current balance: " + bankAccount.getBalance());
+
+    }
+
     private static void openAccount(String userId, Scanner sc) throws IOException {
         System.out.println("1.Simple Account\n2.Joint Account");
         int choice = sc.nextInt();
+        sc.nextLine();
 
         switch (choice) {
             case 1:
                 createSimpleAccount(userId, sc);
+                break;
             case 2:
                 createJointAccount(userId, sc);
+                break;
+
+            default:
+                System.out.println("Invalid option chosen!");
         }
     }
 
@@ -96,6 +121,7 @@ public class CustomerOperations {
         if (Employee.isDetailsValid(customer)) {
             System.out.println("Account opened successfully.");
             String accountNumber = getAccountNumber();
+            System.out.println("Your account number is : "+ accountNumber+" , remember it mothefuckaaaa!");
             customer.setAccountNumber(accountNumber);
             BankAccount b = new BankAccount(customer, accountNumber);
             BankAccountSerializer.serializeBankAccount(b);
@@ -115,6 +141,8 @@ public class CustomerOperations {
         String mobilePrimary = sc.nextLine();
 
         System.out.println("Enter details of secondary nominee :");
+        System.out.println("Enter user id");
+        String userId2 = sc.nextLine();
         System.out.println("Enter name");
         String nameSecondary = sc.nextLine();
         System.out.println("Enter emailId");
@@ -123,7 +151,7 @@ public class CustomerOperations {
         String mobileSecondary = sc.nextLine();
 
         Customer customerPrimary = new Customer(userId, namePrimary, emailIDPrimary, mobilePrimary);
-        Customer customerSecondary = new Customer(userId, nameSecondary, emailIDSecondary, mobileSecondary);
+        Customer customerSecondary = new Customer(userId2, nameSecondary, emailIDSecondary, mobileSecondary);
 
         if (Employee.isDetailsValid(customerPrimary) && Employee.isDetailsValid(customerSecondary)) {
             System.out.println("Account opened successfully.");
@@ -140,6 +168,7 @@ public class CustomerOperations {
             System.out.println("Unable to open account.");
         }
     }
+
 
     private static void transferFunds(String userId, Scanner sc) {
         //write your code here;
@@ -167,10 +196,14 @@ public class CustomerOperations {
         transaction.setTransactionId(Integer.toString(transactionId));
 
         Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+        if(customer == null){
+            System.out.println("open account first motherfucker! ");
+            return;
+        }
         transaction.setPayerId(userId);
         transaction.setPayerAccountNumber(customer.getAccountNumber());
         transaction.setPayeeAccountNumber(payeeAccountNumber);
-
+        transaction.setTransactionAmount(transferAmount);
         TransactionUtil.transferFund(transaction);
 
         logger.info("Transaction completed!");
@@ -202,7 +235,14 @@ public class CustomerOperations {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(Integer.toString(transactionId));
 
+
         Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+
+        if(customer == null){
+            System.out.println("open account first motherfucker! ");
+            return;
+        }
+
         String customerBankAccountNumber = customer.getAccountNumber();
         transaction.setPayerAccountNumber(customerBankAccountNumber);
         transaction.setTransactionAmount(amount);
@@ -231,14 +271,21 @@ public class CustomerOperations {
             return;
         }
 
-        System.out.println("Hello user, how are you today! \n Enter amount to deposit in your account." );
+        System.out.println("Hello user, how are you today!\n Enter amount to deposit in your account." );
         Double amount = sc.nextDouble();
 
         System.out.println("Depositing amount in your account .... ");
 
         Transaction transaction = new Transaction();
         transaction.setTransactionId(Integer.toString(transactionId));
+
         Customer customer = CustomerSerializer.deSerializeCustomer(userId);
+
+        if(customer == null){
+            System.out.println("Open account first motherfucker! ");
+            return;
+        }
+
         String customerBankAccountNumber = customer.getAccountNumber();
         transaction.setPayeeAccountNumber(customerBankAccountNumber);
         transaction.setTransactionAmount(amount);
@@ -290,12 +337,11 @@ public class CustomerOperations {
         System.out.println("User Registered Successfully!");
     }
 
-    private static void saveUser(String userId, String password) {
-        try {
-            Files.write(Paths.get("registeredUsers.txt"), (userId + "\t" + password + "\n").getBytes(), StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            //exception handling left as an exercise for the reader
-        }
+    private static void saveUser(String userId, String password) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("registeredUsers.txt",true));
+        writer.write(userId+"\t"+password+"\n");
+        writer.close();
+
     }
 
     public static HashMap<String, String> getRegisteredUser() throws IOException {
@@ -340,7 +386,7 @@ public class CustomerOperations {
         File file = new File("transactionsIds.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-        writer.write(id);
+        writer.write(id+"\n");
         writer.close();
     }
 }
