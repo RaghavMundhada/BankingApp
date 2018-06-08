@@ -1,8 +1,7 @@
 package bankingApp;
 
 import bankingApp.bankAccount.BankAccount;
-import bankingApp.bankAccount.BankAccountSerializer;
-import org.apache.log4j.LogManager;
+import bankingApp.InformationSerializer.BankAccountDetailsSerializer;
 import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +15,7 @@ public class TransactionUtil {
         // Pass a transaction object which has the the account number to transfer funds to( Payee account number)
         // Read BankAccount object from disk using the account number to get the current balance and deposit the amount requested to be deposited!
 
-        BankAccount bankAccount = BankAccountSerializer.deSerializeBankAccount(transaction.getPayeeAccountNumber());
+        BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(transaction.getPayeeAccountNumber());
 
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         transaction.setTimestampTransactionCreated(timeStamp);
@@ -30,7 +29,7 @@ public class TransactionUtil {
         transaction.setTransactionStatus("SUCCESSFUL");
         System.out.println("Amount deposited successfully!");
         bankAccount.getTransactions().add(transaction);
-        BankAccountSerializer.serializeBankAccount(bankAccount);
+        BankAccountDetailsSerializer.saveBankAccountDetails(bankAccount);
     }
 
     public static void withdrawAmount(Transaction transaction){
@@ -40,7 +39,7 @@ public class TransactionUtil {
         // raised an error if the withdrawn amount is greater than the available balance
 
 
-        BankAccount bankAccount = BankAccountSerializer.deSerializeBankAccount(transaction.getPayerAccountNumber());
+        BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(transaction.getPayerAccountNumber());
 
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         transaction.setTimestampTransactionCreated(timeStamp);
@@ -59,12 +58,12 @@ public class TransactionUtil {
         bankAccount.setBalance(newBalance);
         transaction.setTransactionStatus("SUCCESSFUL");
         bankAccount.getTransactions().add(transaction);
-        BankAccountSerializer.serializeBankAccount(bankAccount);
+        BankAccountDetailsSerializer.saveBankAccountDetails(bankAccount);
     }
 
     public static void transferFund(Transaction transaction){
 
-        // Transfer funds from one account to another account, meaning withdraw from payer account and deposit to payee account.
+        // TransferFunds funds from one account to another account, meaning withdraw from payer account and deposit to payee account.
         // Withdraw first to check if the amount can be withdrawn or not
         withdrawAmount(transaction);
 
