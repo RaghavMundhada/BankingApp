@@ -1,7 +1,7 @@
 package bankingApp.bankAccount;
 
 import bankingApp.Transaction;
-import bankingApp.user.customer.Customer;
+import bankingApp.user.CustomerDetails;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ public class BankAccount implements Serializable{
         SAVINGS, CHECKING, CREDIT
     }
 
-    private Customer accountOwner;
+    private CustomerDetails accountOwner;
     private String accountNumber;
     private Double balance;
 
-    public BankAccount(Customer accountOwner, String accountNumber) {
+    public BankAccount(CustomerDetails accountOwner, String accountNumber) {
         this.accountOwner = accountOwner;
         this.accountNumber = accountNumber;
         this.balance = 0.0;
@@ -54,11 +54,11 @@ public class BankAccount implements Serializable{
         this.debitTransactions = debitTransactions;
     }
 
-    public Customer getAccountOwner() {
+    public CustomerDetails getAccountOwner() {
         return accountOwner;
     }
 
-    public void setAccountOwner(Customer accountOwner) {
+    public void setAccountOwner(CustomerDetails accountOwner) {
         this.accountOwner = accountOwner;
     }
 

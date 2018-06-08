@@ -1,8 +1,4 @@
-a	a
-b	b
-c	c
-d	d
-e	e
-f	f
-zia	zia
-zia1	zia1
+u	u
+h	h
+n	n
+x	x
