@@ -9,6 +9,9 @@ public class CustomerSerializer {
     private static Logger logger = Logger.getLogger(CustomerSerializer.class);
 
     public static void serializeCustomerObject(Customer customer){
+        //Serializes Customer class object to disk (Saves customer class details)
+
+
         String userId = customer.getUserId();
 
         try {
@@ -29,6 +32,7 @@ public class CustomerSerializer {
 
 
     public static Customer deSerializeCustomer(String userId){
+        // De serializes customer class object to disk
 
         Customer customer1;
         try {

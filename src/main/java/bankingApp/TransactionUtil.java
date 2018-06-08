@@ -13,6 +13,9 @@ public class TransactionUtil {
 
     public static void depositAmount(Transaction transaction){
 
+        // Pass a transaction object which has the the account number to transfer funds to( Payee account number)
+        // Read BankAccount object from disk using the account number to get the current balance and deposit the amount requested to be deposited!
+
         BankAccount bankAccount = BankAccountSerializer.deSerializeBankAccount(transaction.getPayeeAccountNumber());
 
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
@@ -31,6 +34,12 @@ public class TransactionUtil {
     }
 
     public static void withdrawAmount(Transaction transaction){
+
+        // Pass a transaction object which has the account number to withdraw from ( Payer account number)
+        // Reads BankAccount object from disk using the account number to get the current balance and withdraw the amount from it,
+        // raised an error if the withdrawn amount is greater than the available balance
+
+
         BankAccount bankAccount = BankAccountSerializer.deSerializeBankAccount(transaction.getPayerAccountNumber());
 
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
@@ -54,8 +63,17 @@ public class TransactionUtil {
     }
 
     public static void transferFund(Transaction transaction){
-        depositAmount(transaction);
+
+        // Transfer funds from one account to another account, meaning withdraw from payer account and deposit to payee account.
+        // Withdraw first to check if the amount can be withdrawn or not
         withdrawAmount(transaction);
+
+        if(transaction.getTransactionStatus().equals("FAILED")){
+            System.out.println("Amount cannot be transferred due to lack of funds !");
+            return;
+        }
+
+        depositAmount(transaction);
 
     }
 }

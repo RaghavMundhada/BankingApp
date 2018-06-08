@@ -9,6 +9,8 @@ public class BankAccountSerializer {
     private static Logger logger = Logger.getLogger(BankAccountSerializer.class);
 
     public static void serializeBankAccount(BankAccount bankAccount){
+
+        // Serializes BankAccount object to disk(Saves bank account details including balance and all)
         String bankAccountNumber = bankAccount.getAccountNumber();
 
         try {
@@ -34,6 +36,9 @@ public class BankAccountSerializer {
 
 
     public static BankAccount deSerializeBankAccount(String accountNumber){
+
+        // De Serializes BankAccount object from disk( Fetches Bank account details )
+
         String bankAccountNumber = accountNumber;
         BankAccount bankAccount1;
         try {
