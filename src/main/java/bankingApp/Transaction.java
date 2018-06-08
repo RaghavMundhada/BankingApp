@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 
 public class Transaction implements Serializable{
+    // Transaction class implements serializable since BankAccount creates an object of transaction class, hence to serialize
+    // BankAccount class, you need to make Transaction implement Serializable too
     private String transactionId;
     private String payerId;
     private String payeeId;
