@@ -37,7 +37,7 @@ public class BankAccountAppCheck {
 
         BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(accountNumber);
 
-        Assert.assertFalse(bankAccount.getBalance().equals(51));
+        Assert.assertTrue(bankAccount.getBalance()==51);
     }
 
     @Test
