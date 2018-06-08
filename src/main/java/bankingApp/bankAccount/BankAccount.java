@@ -4,6 +4,7 @@ import bankingApp.Transaction;
 import bankingApp.user.customer.Customer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BankAccount implements Serializable{
@@ -18,7 +19,10 @@ public class BankAccount implements Serializable{
     public BankAccount(Customer accountOwner, String accountNumber) {
         this.accountOwner = accountOwner;
         this.accountNumber = accountNumber;
-        balance = 0.0;
+        this.balance = 0.0;
+        transactions = new ArrayList<>();
+        creditTransactions = new ArrayList<>();
+        debitTransactions = new ArrayList<>();
     }
 
     private TypeOfAccount typeOfAccount;

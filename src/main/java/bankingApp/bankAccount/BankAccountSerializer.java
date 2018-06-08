@@ -16,10 +16,9 @@ public class BankAccountSerializer {
             FileOutputStream fileOutputStream = new FileOutputStream(bankAccountNumber,false);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            BankAccount bankAccount1 = new BankAccount();
-            bankAccount1.setAccountNumber(bankAccount.getAccountNumber());
-            bankAccount1.setAccountOwner(bankAccount.getAccountOwner());
+            BankAccount bankAccount1 = new BankAccount(bankAccount.getAccountOwner(),bankAccount.getAccountNumber());
             bankAccount1.setTypeOfAccount(bankAccount.getTypeOfAccount());
+            bankAccount1.setBalance(bankAccount.getBalance());
             bankAccount1.setTransactions(bankAccount.getTransactions());
             bankAccount1.setCreditTransactions(bankAccount.getCreditTransactions());
             bankAccount1.setDebitTransactions(bankAccount.getDebitTransactions());
@@ -38,13 +37,12 @@ public class BankAccountSerializer {
         String bankAccountNumber = accountNumber;
         BankAccount bankAccount1;
         try {
-            FileInputStream fileInputStream = new FileInputStream(bankAccountNumber);
+            FileInputStream fileInputStream = new FileInputStream( bankAccountNumber);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
             BankAccount bankAccount = (BankAccount) objectInputStream.readObject();
-             bankAccount1 = new BankAccount();
-            bankAccount1.setAccountNumber(bankAccount.getAccountNumber());
-            bankAccount1.setAccountOwner(bankAccount.getAccountOwner());
+             bankAccount1 = new BankAccount(bankAccount.getAccountOwner(),bankAccount.getAccountNumber());
+            bankAccount1.setBalance(bankAccount.getBalance());
             bankAccount1.setTypeOfAccount(bankAccount.getTypeOfAccount());
             bankAccount1.setTransactions(bankAccount.getTransactions());
             bankAccount1.setCreditTransactions(bankAccount.getCreditTransactions());
