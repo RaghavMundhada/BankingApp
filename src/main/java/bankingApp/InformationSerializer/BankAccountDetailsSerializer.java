@@ -16,7 +16,7 @@ public class BankAccountDetailsSerializer {
         String bankAccountNumber = accountNumber;
         BankAccount bankAccountDetails;
         try {
-            FileInputStream fileIn = new FileInputStream( bankAccountNumber);
+            FileInputStream fileIn = new FileInputStream( "BankAccountData/" + bankAccountNumber);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             BankAccount bankAccount = (BankAccount) objectIn.readObject();
@@ -50,7 +50,7 @@ public class BankAccountDetailsSerializer {
 
         try {
 
-            FileOutputStream fileOut = new FileOutputStream(bankAccountNumber,false);
+            FileOutputStream fileOut = new FileOutputStream("BankAccountData/" + bankAccountNumber,false);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
             BankAccount bankAccount1 = new BankAccount(bankAccount.getAccountOwner(),bankAccount.getAccountNumber());

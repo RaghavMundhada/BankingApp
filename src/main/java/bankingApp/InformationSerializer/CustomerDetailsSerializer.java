@@ -15,7 +15,7 @@ public class CustomerDetailsSerializer {
         CustomerDetails customerDetails1;
         try {
 
-            FileInputStream fileInputStream = new FileInputStream(customerUserId);
+            FileInputStream fileInputStream = new FileInputStream("CustomerData/" + customerUserId);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
             CustomerDetails customerDetails = (CustomerDetails) objectInputStream.readObject();
@@ -40,7 +40,7 @@ public class CustomerDetailsSerializer {
         String customerUserId = customer.getCustomerUserId();
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(customerUserId,false);
+            FileOutputStream fileOutputStream = new FileOutputStream("CustomerData/" + customerUserId,false);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             CustomerDetails customer1 = new CustomerDetails(customer.getCustomerUserId(),customer.getCustomerName(),customer.getCustomerEmailId(),customer.getCustomerMobileNumber());
