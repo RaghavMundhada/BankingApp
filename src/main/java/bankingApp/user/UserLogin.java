@@ -32,10 +32,10 @@ public class UserLogin {
                         new CheckBalance(userId).checkAccountBalance();
                         break;
                     case 3:
-                        new Deposit(userId).deposit();
+                        new Deposit(userId).deposit(scanner);
                         break;
                     case 4:
-                        new Withdraw(userId).withdraw();
+                        new Withdraw(userId).withdraw(scanner);
                         break;
                     case 5:
                         new TransferFunds(userId).transferFunds();

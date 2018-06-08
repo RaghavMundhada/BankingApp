@@ -1,4 +1,2 @@
-u	u
-h	h
-n	n
-x	x
+mark	facebook
+pichai	google

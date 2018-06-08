@@ -26,7 +26,7 @@ public class OpenAccount {
 
         switch (choice) {
             case 1:
-                openSimpleAccount();
+                openSimpleAccount(scanner);
                 break;
             case 2:
                 openJointAccount();
@@ -37,8 +37,7 @@ public class OpenAccount {
         }
     }
 
-    private void openSimpleAccount() throws IOException {
-        Scanner scanner = new Scanner(System.in);
+    public void openSimpleAccount(Scanner scanner) throws IOException {
 
         System.out.println("Enter name of account holder");
         String ownerName = scanner.nextLine();

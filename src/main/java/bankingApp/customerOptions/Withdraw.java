@@ -19,15 +19,13 @@ public class Withdraw {
         this.customerUserId = userId;
     }
 
-    public void withdraw(){
+    public void withdraw(Scanner scanner){
         CustomerDetails customer = CustomerDetailsSerializer.readCustomerDetails(customerUserId);
 
         if(customer == null){
             System.out.println("You do not have any account available! Choose option 1 to open account");
             return;
         }
-
-        Scanner scanner = new Scanner(System.in);
 
         int transactionId;
         try {
