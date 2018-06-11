@@ -20,13 +20,11 @@ public class BankAccountDetailsSerializer {
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             BankAccount bankAccount = (BankAccount) objectIn.readObject();
-            bankAccountDetails = new BankAccount(bankAccount.getAccountOwner(),bankAccount.getAccountNumber());
+            bankAccountDetails = new BankAccount(bankAccount.getAccountOwnerId(),bankAccount.getAccountNumber());
 
             bankAccountDetails.setBalance(bankAccount.getBalance());
-            bankAccountDetails.setTypeOfAccount(bankAccount.getTypeOfAccount());
+
             bankAccountDetails.setTransactions(bankAccount.getTransactions());
-            bankAccountDetails.setCreditTransactions(bankAccount.getCreditTransactions());
-            bankAccountDetails.setDebitTransactions(bankAccount.getDebitTransactions());
 
             fileIn.close();
             objectIn.close();
@@ -53,12 +51,10 @@ public class BankAccountDetailsSerializer {
             FileOutputStream fileOut = new FileOutputStream("BankAccountData/" + bankAccountNumber,false);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
-            BankAccount bankAccount1 = new BankAccount(bankAccount.getAccountOwner(),bankAccount.getAccountNumber());
-            bankAccount1.setTypeOfAccount(bankAccount.getTypeOfAccount());
+            BankAccount bankAccount1 = new BankAccount(bankAccount.getAccountOwnerId(),bankAccount.getAccountNumber());
+
             bankAccount1.setBalance(bankAccount.getBalance());
             bankAccount1.setTransactions(bankAccount.getTransactions());
-            bankAccount1.setCreditTransactions(bankAccount.getCreditTransactions());
-            bankAccount1.setDebitTransactions(bankAccount.getDebitTransactions());
 
             objectOut.writeObject(bankAccount1);
             objectOut.close();

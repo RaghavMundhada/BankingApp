@@ -4,6 +4,7 @@ import bankingApp.InformationSerializer.CustomerDetailsSerializer;
 import bankingApp.Transaction;
 import bankingApp.TransactionIdUtils;
 import bankingApp.TransactionUtil;
+import bankingApp.dao.CustomerDaoImplementation;
 import bankingApp.user.CustomerDetails;
 import org.apache.log4j.Logger;
 
@@ -20,7 +21,9 @@ public class TransferFunds {
     }
 
     public void transferFunds(){
-        CustomerDetails customer = CustomerDetailsSerializer.readCustomerDetails(customerUserId);
+        CustomerDetails customer = new CustomerDaoImplementation().getCustomerDetails(customerUserId);
+
+//                = CustomerDetailsSerializer.readCustomerDetails(customerUserId);
         if(customer == null){
             System.out.println("You do not have any account available! Choose option 1 to open account ");
             return;
