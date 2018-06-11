@@ -3,6 +3,9 @@ package bankingApp.customerOptions;
 import bankingApp.InformationSerializer.BankAccountDetailsSerializer;
 import bankingApp.InformationSerializer.CustomerDetailsSerializer;
 import bankingApp.bankAccount.BankAccount;
+import bankingApp.dao.BankAccountDAO;
+import bankingApp.dao.BankAccountDaoImplementation;
+import bankingApp.dao.CustomerDaoImplementation;
 import bankingApp.user.CustomerDetails;
 import bankingApp.utils.FieldUtils;
 
@@ -53,9 +56,12 @@ public class OpenAccount {
             String accountNumber = getAccountNumber();
             System.out.println("Your account number is : "+ accountNumber+" , remember it mothefuckaaaa!");
             customerDetails.setCustomerAccountNumber(accountNumber);
-            BankAccount b = new BankAccount(customerDetails, accountNumber);
-            BankAccountDetailsSerializer.saveBankAccountDetails(b);
-            CustomerDetailsSerializer.saveCustomerDetails(customerDetails);
+            BankAccount bankAccount = new BankAccount(userId, accountNumber);
+            new BankAccountDaoImplementation().saveBankAccount(bankAccount);
+            new CustomerDaoImplementation().saveCustomerDetails(customerDetails);
+
+//            BankAccountDetailsSerializer.saveBankAccountDetails(bankAccount);
+//            CustomerDetailsSerializer.saveCustomerDetails(customerDetails);
         } else {
             System.out.println("Unable to open account.");
         }
@@ -94,13 +100,17 @@ public class OpenAccount {
 
             customerPrimary.setCustomerAccountNumber(accountNumber);
             customerSecondary.setCustomerAccountNumber(accountNumber);
-            BankAccount bankAccount = new BankAccount(customerPrimary, accountNumber);
-            BankAccountDetailsSerializer.saveBankAccountDetails(bankAccount);
-            BankAccount bankAccountSecondary = new BankAccount(customerSecondary, accountNumber);
-            BankAccountDetailsSerializer.saveBankAccountDetails(bankAccountSecondary);
+            BankAccount bankAccount = new BankAccount(userId, accountNumber);
+            new BankAccountDaoImplementation().saveBankAccount(bankAccount);
+//            BankAccountDetailsSerializer.saveBankAccountDetails(bankAccount);
+            BankAccount bankAccountSecondary = new BankAccount(userId2, accountNumber);
+            new BankAccountDaoImplementation().saveBankAccount(bankAccountSecondary);
+//            BankAccountDetailsSerializer.saveBankAccountDetails(bankAccountSecondary);
 
-            CustomerDetailsSerializer.saveCustomerDetails(customerPrimary);
-            CustomerDetailsSerializer.saveCustomerDetails(customerSecondary);
+            new CustomerDaoImplementation().saveCustomerDetails(customerPrimary);
+            new CustomerDaoImplementation().saveCustomerDetails(customerSecondary);
+//            CustomerDetailsSerializer.saveCustomerDetails(customerPrimary);
+//            CustomerDetailsSerializer.saveCustomerDetails(customerSecondary);
         }
     }
 

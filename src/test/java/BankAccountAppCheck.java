@@ -4,6 +4,9 @@ import bankingApp.bankAccount.BankAccount;
 import bankingApp.customerOptions.Deposit;
 import bankingApp.customerOptions.OpenAccount;
 import bankingApp.customerOptions.Withdraw;
+import bankingApp.dao.BankAccountDaoImplementation;
+import bankingApp.dao.CustomerDaoImplementation;
+import bankingApp.database.DatabaseUtil;
 import bankingApp.user.CustomerDetails;
 import bankingApp.user.UserRegistration;
 import org.junit.Assert;
@@ -22,20 +25,25 @@ public class BankAccountAppCheck {
         }
 
         Scanner sc = new Scanner(new File("src/test/resources/accountCreationTest.txt"));
+        CustomerDetails customer = new CustomerDaoImplementation().getCustomerDetails("mark");
 
-        new OpenAccount("mark").openSimpleAccount(sc);
+        if(customer == null){
+            new OpenAccount("mark").openSimpleAccount(sc);
+            customer = new CustomerDaoImplementation().getCustomerDetails("mark");
+        }
 
         Scanner sc1 = new Scanner(new File("src/test/resources/addMoneyTest.txt"));
+        DatabaseUtil.updateBankAccountBalance(customer.getCustomerAccountNumber(),0.0);
         new Deposit("mark").deposit(sc1);
 
         Scanner sc2 = new Scanner(new File("src/test/resources/removeMoneyTest.txt"));
         new Withdraw("mark").withdraw(sc2);
 
-        CustomerDetails customer = CustomerDetailsSerializer.readCustomerDetails("mark");
-
         String accountNumber = customer.getCustomerAccountNumber();
 
-        BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(accountNumber);
+        BankAccount bankAccount = new BankAccountDaoImplementation().getBankAccount(accountNumber);
+
+//                = BankAccountDetailsSerializer.readBankAccountDetails(accountNumber);
 
         Assert.assertTrue(bankAccount.getBalance()==51);
     }
@@ -59,18 +67,25 @@ public class BankAccountAppCheck {
         }
 
         Scanner sc = new Scanner(new File("src/test/resources/accountCreationTest.txt"));
+        CustomerDetails customer = new CustomerDaoImplementation().getCustomerDetails("mark");
 
-        new OpenAccount("mark").openSimpleAccount(sc);
+        if(customer == null){
+            new OpenAccount("mark").openSimpleAccount(sc);
+            customer = new CustomerDaoImplementation().getCustomerDetails("mark");
+        }
 
         Scanner sc1 = new Scanner(new File("src/test/resources/addMoneyTest.txt"));
-        new Deposit("mark").deposit(sc1);
 
-        CustomerDetails customer = CustomerDetailsSerializer.readCustomerDetails("mark");
 
         String accountNumber = customer.getCustomerAccountNumber();
 
-        BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(accountNumber);
+        DatabaseUtil.updateBankAccountBalance(accountNumber,0.0);
+        new Deposit("mark").deposit(sc1);
 
+//        CustomerDetails customer = CustomerDetailsSerializer.readCustomerDetails("mark");
+
+//        BankAccount bankAccount = BankAccountDetailsSerializer.readBankAccountDetails(accountNumber);
+        BankAccount bankAccount = new BankAccountDaoImplementation().getBankAccount(accountNumber);
         Assert.assertTrue(bankAccount.getBalance() == 101);
     }
 
@@ -81,7 +96,11 @@ public class BankAccountAppCheck {
         }
 
         Scanner sc = new Scanner(new File("src/test/resources/accountCreationTest.txt"));
+        CustomerDetails customer = new CustomerDaoImplementation().getCustomerDetails("mark");
 
-        new OpenAccount("mark").openSimpleAccount(sc);
+        if(customer == null){
+            new OpenAccount("mark").openSimpleAccount(sc);
+            customer = new CustomerDaoImplementation().getCustomerDetails("mark");
+        }
     }
 }
